@@ -1,8 +1,8 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .models import News, CustomUser
-from .serializers import NewsSerializer, CustomUserSerializer
+from .models import News, CustomUser, Project
+from .serializers import NewsSerializer, CustomUserSerializer, ProjectSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 
 
@@ -46,4 +46,21 @@ class NewsView(APIView):
         news = News.objects.all()
         serializer = NewsSerializer(news, many=True)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
-    
+
+
+class ProjectView(APIView):
+    def get(self, request):
+        serializer = ProjectSerializer(Project.objects.all(), many=True)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, requset):
+        serializer = ProjectSerializer(data=requset.data)
+        
+        if not requset.user.is_verified:
+            return Response({"message": "User is not verified!"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response(data=serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
