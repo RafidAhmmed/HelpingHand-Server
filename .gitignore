@@ -3,6 +3,7 @@ db.sqlite3
 
 # Environments
 venv/
+.env
 
 # TESTING
 __pycache__/
