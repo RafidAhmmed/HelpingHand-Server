@@ -8,5 +8,5 @@ urlpatterns = [
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('register/', views.CustomRegisterView.as_view(), name='register'),
     path('news/', views.NewsView.as_view(), name='news'),
-    # path('report/', views.ReportView.as_view(), name='report'),
+    path('projects/', views.ProjectView.as_view(), name='report'),
 ]
