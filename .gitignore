@@ -1,0 +1,10 @@
+# SQLite database
+db.sqlite3
+
+# Environments
+venv/
+
+# TESTING
+__pycache__/
+*.pyc
+TEST/
