@@ -48,6 +48,38 @@ class NewsView(APIView):
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 
+class NewsDetailView(APIView):
+    def get(self, request, pk):
+        try:
+            news = News.objects.get(id=pk)
+            serializer = NewsSerializer(news)
+            return Response(data=serializer.data, status=status.HTTP_200_OK)
+        except News.DoesNotExist:
+            return Response({"message": "News not found"}, status=status.HTTP_404_NOT_FOUND)
+    
+    def put(self, request, pk):
+        try:
+            news = News.objects.get(id=pk)
+            serializer = NewsSerializer(news, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(data=serializer.data, status=status.HTTP_200_OK)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except News.DoesNotExist:
+            return Response({"message": "News not found"}, status=status.HTTP_404_NOT_FOUND)
+    
+    def post(self, request, pk):
+        try:
+            news = News.objects.get(id=pk)
+            serializer = NewsSerializer(news, data=request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(data=serializer.data, status=status.HTTP_200_OK)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except News.DoesNotExist:
+            return Response({"message": "News not found"}, status=status.HTTP_404_NOT_FOUND)
+
+
 class ProjectView(APIView):
     def get(self, request):
         serializer = ProjectSerializer(Project.objects.all(), many=True)

@@ -46,10 +46,12 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
 
 class News(models.Model):
+    image = models.CharField(max_length=100)
     title = models.CharField(max_length=100)
-    content = models.TextField()
+    link = models.TextField()
     # picture = models.ImageField(upload_to='news_pictures/')  # Uncomment this line to add an image field
     created_at = models.DateTimeField(auto_now_add=True)
+    content = models.TextField()
 
     def __str__(self):
         return self.title
